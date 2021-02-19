@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golangprojectdemos
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: golangprojectdemos
+  template:
+    metadata:
+      labels:
+        name: golangprojectdemos
+    spec:
+      containers:
+      - image: kiranbabycontainerreg.azurecr.io/kiranbabycontainerrepo:golangprojectdemos
+        name: kiranbabycontainerreg
+        ports:
+          - containerPort: 8081
+      imagePullSecrets: 
+      - name: golangprojectdemossecret
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: golangprojectdemos-service
+spec:
+  type: LoadBalancer
+  selector:
+    name: golangprojectdemos
+  ports:
+  - name: http  
+    port: 80
+    targetPort: 8081
